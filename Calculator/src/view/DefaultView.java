@@ -4,10 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
+
+import model.Model;
 
 
 public class DefaultView {
@@ -18,36 +17,33 @@ public class DefaultView {
 			{ "0", ".", "=", "/"}
 	};
 
-	JFrame frame = new JFrame();
-	JPanel mainPanel = new JPanel(new BorderLayout());
-	JTextField field = new JTextField(10);
-	JPanel keyPanel = new JPanel(new GridLayout(BUTTON_TEXTS.length, BUTTON_TEXTS[0].length));
-	JPanel cancelPanel = new JPanel(new GridLayout(1, 1));
+	private JFrame frame = new JFrame();
+	private JPanel mainPanel = new JPanel(new BorderLayout());
+	private JTextField field = new JTextField(10);
+	private JPanel keyPanel = new JPanel(new GridLayout(BUTTON_TEXTS.length, BUTTON_TEXTS[0].length));
+	private JPanel cancelPanel = new JPanel(new GridLayout(1, 1));
+	private final JButton  cancelButton = new JButton("C");
+	
+	private Model model;
 
-	public DefaultView() {
+	public DefaultView(Model model) {
+		this.model = model;
+		
 		field.setBackground(Color.WHITE);
 		field.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+		field.setEditable(false);
 
 		for (int i = 0; i < BUTTON_TEXTS.length; i++) {
 			for (int j = 0; j < BUTTON_TEXTS[i].length; j++) {
 				final JButton button = new JButton(BUTTON_TEXTS[i][j]);
 				button.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
-				button.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if(isNumeric(button.getText())) {
-							field.setText(button.getText());
-						}
-					}
-				});
 				keyPanel.add(button);
 			}
 		}
 		
-		final JButton  cancelButton = new JButton("C");
 		cancelPanel.add(cancelButton);
 		cancelButton.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
+		
 
 		
 		mainPanel.add(field, BorderLayout.PAGE_START);
@@ -61,10 +57,28 @@ public class DefaultView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
+
+	public JTextField getField() {
+		return field;
+	}
+
+	public JPanel getKeyPanel() {
+		return keyPanel;
+	}
+
+	public JPanel getCancelPanel() {
+		return cancelPanel;
+	}
 	
 	
-	public static boolean isNumeric(String str) {
-		  return str.matches("-?\\d+(\\.\\d+)?");
-		}
+
 	
 }
